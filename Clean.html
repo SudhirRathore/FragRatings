@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Collection Privée — Only-Frags Ratings · CDAO</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    :root {
+      --page:    #f5f2ec;
+      --white:   #ffffff;
+      --ink:     #161310;
+      --ink2:    #4a4038;
+      --ink3:    #7d7368;
+      --gold:    #c4a55a;
+      --gold-hi: #d4b870;
+      --gold-sep:rgba(196,165,90,.28);
+      --border:  rgba(22,19,16,.09);
+      --row-sep: rgba(22,19,16,.05);
+      --hover:   #fdf8f2;
+      --sc:      var(--gold);
+    }
+
+    @keyframes pageIn  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes rowIn   { from{opacity:0;transform:translateX(-6px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes cardIn  { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    html { scroll-behavior:smooth; }
+
+    body {
+      font-family:'Montserrat',sans-serif;
+      background:var(--page);
+      color:var(--ink);
+      min-height:100vh;
+      font-size:16px;
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      animation:pageIn .7s ease both;
+    }
+
+    body::before {
+      content:'';
+      position:fixed;
+      inset:8px;
+      border:1px solid rgba(196,165,90,.25);
+      pointer-events:none;
+      z-index:9999;
+    }
+
+    body::after {
+      content:'';
+      position:fixed;
+      inset:13px;
+      border:.5px solid rgba(196,165,90,.10);
+      pointer-events:none;
+      z-index:9999;
+    }
+
+    .gold-thread {
+      height:2px;
+      background:linear-gradient(90deg,transparent,var(--gold) 18%,var(--gold-hi) 50%,var(--gold) 82%,transparent);
+    }
+
+    /* HERO */
+    .hero {
+      background-color:#111009;
+      background-image:
+        radial-gradient(circle,rgba(196,165,90,.18) 1.4px,transparent 1.4px),
+        repeating-linear-gradient(45deg,rgba(196,165,90,.035) 0,rgba(196,165,90,.035) 1px,transparent 0,transparent 50%),
+        repeating-linear-gradient(-45deg,rgba(196,165,90,.035) 0,rgba(196,165,90,.035) 1px,transparent 0,transparent 50%);
+      background-size:30px 30px;
+      padding:48px 64px 50px;
+      border-bottom:1px solid rgba(196,165,90,.24);
+      position:relative;
+      overflow:hidden;
+      text-align:center;
+    }
+
+    .hero::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(ellipse 68% 85% at 50% 55%,rgba(18,15,12,.50) 0%,rgba(8,7,6,.92) 100%);
+      pointer-events:none;
+    }
+
+    .hero::after {
+      content:'RÉSULTATS';
+      position:absolute;
+      bottom:-10px;
+      right:-8px;
+      font-family:'Cormorant Garamond',serif;
+      font-size:100px;
+      font-weight:600;
+      font-style:italic;
+      color:rgba(196,165,90,.035);
+      letter-spacing:8px;
+      pointer-events:none;
+      white-space:nowrap;
+      z-index:0;
+    }
+
+    .corners { position:absolute; inset:22px; pointer-events:none; z-index:1; }
+    .corners span { position:absolute; width:26px; height:26px; border-color:rgba(196,165,90,.38); border-style:solid; }
+    .c-tl{top:0;left:0;border-width:1px 0 0 1px}
+    .c-tr{top:0;right:0;border-width:1px 1px 0 0}
+    .c-bl{bottom:0;left:0;border-width:0 0 1px 1px}
+    .c-br{bottom:0;right:0;border-width:0 1px 1px 0}
+
+    .hero > *:not(.corners) { position:relative; z-index:2; }
+
+    .hero-team {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size:11px;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(196,165,90,.82);
+      border:.5px solid rgba(196,165,90,.26);
+      padding:8px 18px;
+      margin-bottom:22px;
+    }
+
+    .hero-team::before,.hero-team::after { content:'·'; opacity:.5; }
+
+    .hero-kicker {
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .hero-kicker::before,.hero-kicker::after {
+      content:'';
+      width:42px;
+      height:1px;
+      background:var(--gold);
+      opacity:.42;
+    }
+
+    .hero h1 {
+      font-family:'Cormorant Garamond',serif;
+      font-weight:400;
+      font-size:clamp(40px,5vw,68px);
+      letter-spacing:2px;
+      line-height:1.05;
+      color:#ede6d4;
+      margin-bottom:14px;
+      width:100%;
+      display:block;
+    }
+
+    .hero h1 em {
+      font-style:italic;
+      color:var(--gold-hi);
+      font-weight:400;
+    }
+
+    .hero-funny {
+      font-size:15px;
+      color:rgba(237,230,212,.82);
+      letter-spacing:.4px;
+      margin-bottom:14px;
+    }
+
+    .hero-meta {
+      font-size:12px;
+      font-weight:400;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:rgba(237,230,212,.55);
+      margin-bottom:18px;
+      width:100%;
+      display:block;
+    }
+
+    .hero-meta span {
+      color:rgba(196,165,90,.65);
+      margin:0 6px;
+    }
+
+    .hero-orn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+    }
+
+    .hero-orn::before,.hero-orn::after {
+      content:'';
+      width:70px;
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(196,165,90,.42));
+    }
+
+    .hero-orn::after {
+      background:linear-gradient(90deg,rgba(196,165,90,.42),transparent);
+    }
+
+    .hero-orn i {
+      font-style:normal;
+      color:rgba(196,165,90,.65);
+      font-size:13px;
+    }
+
+    /* CONTROLS */
+    .controls {
+      position:sticky;
+      top:0;
+      z-index:100;
+      display:flex;
+      align-items:end;
+      flex-wrap:wrap;
+      gap:24px;
+      padding:18px 64px;
+      background:rgba(255,255,255,.97);
+      border-bottom:1px solid var(--border);
+      box-shadow:0 4px 24px rgba(22,19,16,.06);
+      backdrop-filter:blur(14px);
+    }
+
+    .ctrl {
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:220px;
+    }
+
+    .ctrl label {
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--gold);
+    }
+
+    .ctrl select {
+      background:transparent;
+      border:none;
+      border-bottom:1px solid var(--border);
+      color:var(--ink);
+      font-family:'Montserrat',sans-serif;
+      font-size:14px;
+      font-weight:400;
+      letter-spacing:.3px;
+      padding:9px 0;
+      outline:none;
+      transition:border-color .25s;
+      -webkit-appearance:none;
+      appearance:none;
+      cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6' fill='none' stroke='%23c4a55a' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 2px center;
+      padding-right:22px;
+    }
+
+    .ctrl select:focus { border-bottom-color:var(--gold); }
+    .ctrl select option { background:#fff; color:var(--ink); }
+    .ctrl-sort { margin-left:auto; }
+
+    /* PICKS */
+    .picks-section {
+      padding:34px 64px 24px;
+      background:var(--white);
+      border-bottom:1px solid var(--border);
+    }
+
+    .picks-heading {
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:22px;
+    }
+
+    .picks-heading::before,.picks-heading::after {
+      content:'';
+      flex:1;
+      height:1px;
+      background:var(--gold-sep);
+    }
+
+    .picks-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:18px;
+      font-weight:500;
+      font-style:italic;
+      color:var(--gold);
+      letter-spacing:1px;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .picks-grid { display:flex; flex-wrap:wrap; gap:16px; }
+
+    .pick-card {
+      flex:1;
+      min-width:230px;
+      max-width:290px;
+      background:var(--page);
+      border-top:2.5px solid var(--sc);
+      border-left:1px solid var(--border);
+      border-right:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      padding:0 0 16px 0;
+      position:relative;
+      overflow:hidden;
+      animation:cardIn .45s ease both;
+    }
+
+    .pick-img-wrap {
+      width:100%;
+      height:110px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:14px;
+      background:linear-gradient(160deg,rgba(196,165,90,.08) 0%,rgba(245,242,236,.5) 100%);
+      border-bottom:1px solid var(--border);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .pick-img {
+      max-height:94px;
+      max-width:85%;
+      object-fit:contain;
+      transition:transform .45s cubic-bezier(.22,.61,.36,1);
+      filter:drop-shadow(0 4px 10px rgba(22,19,16,.13));
+    }
+
+    .pick-card:hover .pick-img {
+      transform:scale(1.05) translateY(-2px);
+    }
+
+    .pick-img-fallback {
+      font-size:28px;
+      color:rgba(196,165,90,.25);
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      pointer-events:none;
+    }
+
+    .pick-body { padding:0 16px; }
+
+    .pick-medal {
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color:var(--sc);
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:7px;
+    }
+
+    .pick-medal.m1::before{content:'🥇';font-size:14px;}
+    .pick-medal.m2::before{content:'🥈';font-size:14px;}
+    .pick-medal.m3::before{content:'🥉';font-size:14px;}
+
+    .pick-brand {
+      font-family:'Cormorant Garamond',serif;
+      font-size:18px;
+      font-weight:600;
+      color:var(--ink);
+      margin-bottom:2px;
+      line-height:1.2;
+    }
+
+    .pick-name {
+      font-family:'Cormorant Garamond',serif;
+      font-size:15px;
+      font-weight:400;
+      font-style:italic;
+      color:var(--ink2);
+      margin-bottom:10px;
+      line-height:1.35;
+    }
+
+    .pick-score { display:flex; align-items:center; gap:10px; }
+
+    .agg-badge {
+      font-family:'Cormorant Garamond',serif;
+      font-size:21px;
+      font-weight:600;
+      line-height:1;
+    }
+
+    .agg-bar-wrap { flex:1; }
+
+    .agg-bar {
+      height:4px;
+      border-radius:3px;
+      transition:width .6s ease;
+    }
+
+    .agg-label {
+      font-size:11px;
+      letter-spacing:.5px;
+      color:var(--ink3);
+      margin-top:6px;
+    }
+
+    /* MAIN */
+    .main { padding:44px 64px 90px; }
+    .sec-wrap { margin-top:42px; }
+    .sec-wrap:first-child { margin-top:0; }
+
+    .sec-strip {
+      background-color:#ede3cf;
+      background-image:
+        radial-gradient(circle,rgba(196,165,90,.22) 1.6px,transparent 1.6px),
+        repeating-linear-gradient(45deg,rgba(196,165,90,.05) 0,rgba(196,165,90,.05) 1px,transparent 0,transparent 50%),
+        repeating-linear-gradient(-45deg,rgba(196,165,90,.05) 0,rgba(196,165,90,.05) 1px,transparent 0,transparent 50%);
+      background-size:28px 28px;
+      padding:20px 30px;
+      border-top:1px solid var(--gold-sep);
+      border-bottom:1px solid var(--gold-sep);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .sec-strip::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg,rgba(235,222,200,.97) 0%,rgba(235,222,200,.78) 52%,rgba(235,222,200,.22) 100%);
+      pointer-events:none;
+    }
+
+    .sec-strip::after {
+      content:attr(data-roman);
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
+      font-family:'Cormorant Garamond',serif;
+      font-size:100px;
+      font-weight:600;
+      font-style:italic;
+      color:var(--sc);
+      opacity:.08;
+      line-height:1;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .sec-inner { position:relative; z-index:1; }
+
+    .sec-eyebrow {
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--sc);
+      margin-bottom:6px;
+    }
+
+    .sec-main {
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:6px;
+    }
+
+    .sec-roman {
+      font-family:'Cormorant Garamond',serif;
+      font-size:18px;
+      font-weight:600;
+      color:var(--sc);
+      letter-spacing:1px;
+    }
+
+    .sec-rule {
+      width:1px;
+      height:24px;
+      background:rgba(22,19,16,.15);
+    }
+
+    .sec-name {
+      font-family:'Cormorant Garamond',serif;
+      font-size:28px;
+      font-weight:400;
+      font-style:italic;
+      color:var(--ink);
+      letter-spacing:.5px;
+    }
+
+    .sec-desc {
+      font-size:12px;
+      font-weight:400;
+      color:var(--ink3);
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .table-card {
+      background:var(--white);
+      border-top:2.5px solid var(--sc);
+      border-left:1px solid var(--border);
+      border-right:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      box-shadow:0 8px 40px rgba(22,19,16,.07), 0 2px 8px rgba(22,19,16,.04);
+      overflow:hidden;
+    }
+
+    .table-scroll { overflow-x:auto; }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      min-width:860px;
+    }
+
+    thead tr { border-bottom:1px solid var(--border); }
+
+    thead th {
+      padding:14px 18px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:var(--ink3);
+      text-align:left;
+      white-space:nowrap;
+    }
+
+    thead th.th-c { text-align:center; }
+
+    tbody tr {
+      border-bottom:1px solid var(--row-sep);
+      transition:background .2s;
+    }
+
+    tbody tr:nth-child(even) { background:rgba(245,242,236,.55); }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:var(--hover) !important; }
+
+    tbody tr td:first-child {
+      border-left:3px solid rgba(22,19,16,.07);
+      padding-left:18px;
+      transition:border-color .24s;
+    }
+
+    tbody tr:hover td:first-child { border-left-color:var(--sc); }
+
+    td {
+      padding:14px 18px;
+      vertical-align:middle;
+      font-size:14px;
+    }
+
+    .td-rank {
+      font-family:'Cormorant Garamond',serif;
+      font-size:18px;
+      color:var(--sc);
+      font-weight:600;
+      text-align:center;
+      width:40px;
+    }
+
+    .badge {
+      display:inline-block;
+      font-size:11px;
+      font-weight:600;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      padding:5px 10px;
+      border-radius:20px;
+    }
+
+    .bm { background:rgba(45,72,115,.1);  color:#2d4873; }
+    .bw { background:rgba(155,70,100,.1); color:#9b4664; }
+    .bu { background:rgba(90,55,140,.1);  color:#5a378c; }
+
+    .td-b {
+      font-family:'Cormorant Garamond',serif;
+      font-size:19px;
+      font-weight:600;
+      color:var(--ink);
+      transition:color .22s;
+      white-space:nowrap;
+    }
+
+    tbody tr:hover .td-b { color:var(--sc); }
+
+    .td-n {
+      font-family:'Cormorant Garamond',serif;
+      font-size:18px;
+      font-weight:500;
+      font-style:italic;
+      color:var(--ink);
+      letter-spacing:0.2px;
+      line-height:1.35;
+    }
+
+    .td-r { text-align:center; }
+
+    .rater-score {
+      display:inline-block;
+      font-size:14px;
+      font-weight:600;
+      font-family:'Cormorant Garamond',serif;
+      width:32px;
+      height:32px;
+      line-height:32px;
+      border-radius:50%;
+      text-align:center;
+    }
+
+    .rs-5 { background:rgba(196,165,90,.18); color:#9a7530; }
+    .rs-4 { background:rgba(74,133,104,.13); color:#2d6642; }
+    .rs-3 { background:rgba(77,127,160,.12); color:#2d5a7a; }
+    .rs-2 { background:rgba(176,88,120,.12); color:#8a3055; }
+    .rs-1 { background:rgba(180,88,88,.12);  color:#8a2020; }
+    .rs-null { color:var(--ink3); font-size:14px; }
+
+    .td-agg {
+      text-align:center;
+      min-width:96px;
+    }
+
+    .agg-wrap {
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+    }
+
+    .agg-num {
+      font-family:'Cormorant Garamond',serif;
+      font-size:22px;
+      font-weight:600;
+      letter-spacing:1px;
+      line-height:1;
+    }
+
+    .agg-mini-bar {
+      width:44px;
+      height:4px;
+      border-radius:3px;
+    }
+
+    .c-gold {color:#9a7030;}
+    .c-green{color:#2d6642;}
+    .c-blue{color:#2d5a7a;}
+    .c-gray{color:var(--ink3);}
+    .c-rose{color:#8a3055;}
+
+    .bg-gold{background:rgba(196,165,90,.7);}
+    .bg-green{background:rgba(74,133,104,.6);}
+    .bg-blue{background:rgba(77,127,160,.6);}
+    .bg-gray{background:rgba(154,144,128,.5);}
+    .bg-rose{background:rgba(176,88,120,.6);}
+
+    .no-results {
+      font-family:'Cormorant Garamond',serif;
+      font-style:italic;
+      font-size:28px;
+      color:var(--ink3);
+      text-align:center;
+      padding:88px 0;
+      display:none;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color:#111009;
+      background-image:
+        radial-gradient(circle,rgba(196,165,90,.1) 1.5px,transparent 1.5px),
+        repeating-linear-gradient(45deg,rgba(196,165,90,.028) 0,rgba(196,165,90,.028) 1px,transparent 0,transparent 50%),
+        repeating-linear-gradient(-45deg,rgba(196,165,90,.028) 0,rgba(196,165,90,.028) 1px,transparent 0,transparent 50%);
+      background-size:28px 28px;
+      border-top:1px solid rgba(196,165,90,.22);
+      text-align:center;
+      padding:38px 64px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    footer::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(ellipse 55% 100% at 50% 50%,rgba(20,17,12,.65) 0%,rgba(8,7,6,.96) 100%);
+      pointer-events:none;
+    }
+
+    footer > * { position:relative; }
+
+    .f-orn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:20px;
+      margin-bottom:14px;
+    }
+
+    .f-orn::before,.f-orn::after {
+      content:'';
+      width:72px;
+      height:1px;
+      background:rgba(196,165,90,.24);
+    }
+
+    .f-orn span {
+      color:rgba(196,165,90,.6);
+      font-size:12px;
+    }
+
+    .f-l1 {
+      font-size:12px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(237,230,212,.6);
+      margin-bottom:8px;
+      line-height:1.5;
+    }
+
+    .f-l1 em {
+      color:var(--gold);
+      font-style:normal;
+    }
+
+    .f-l2 {
+      font-size:11px;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:rgba(237,230,212,.35);
+      line-height:1.5;
+    }
+
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:var(--page); }
+    ::-webkit-scrollbar-thumb { background:rgba(196,165,90,.25); border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:var(--gold); }
+
+    ::selection {
+      background:rgba(196,165,90,.22);
+      color:var(--ink);
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .controls,
+      .picks-section,
+      .main,
+      footer {
+        padding-left:24px;
+        padding-right:24px;
+      }
+
+      .hero::after {
+        font-size:64px;
+      }
+
+      .ctrl-sort {
+        margin-left:0;
+      }
+
+      .ctrl {
+        min-width:100%;
+      }
+
+      .sec-name {
+        font-size:24px;
+      }
+
+      .hero-meta,
+      .hero-kicker {
+        line-height:1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="gold-thread"></div>
+
+<header class="hero">
+  <div class="corners">
+    <span class="c-tl"></span><span class="c-tr"></span>
+    <span class="c-bl"></span><span class="c-br"></span>
+  </div>
+
+  <div class="hero-team">CDAO · Fragrance Intelligence Unit</div>
+  <div class="hero-kicker">Subscription-Free · No Algorithms Were Harmed</div>
+  <h1>Only - <em> Frags</em></h1>
+  <p class="hero-funny">Nose-Tested · Data-Approved · CDAO Certified</p>
+  <p class="hero-meta">57 Fragrances <span>·</span> 3 Expert Noses <span>·</span> Weighted Avg Score 3.6 / 5 <span>·</span> MMXXVI</p>
+  <div class="hero-orn"><i>✦</i></div>
+</header>
+
+<div class="controls">
+  <div class="ctrl">
+    <label>Gender</label>
+    <select id="fG" onchange="filterAndRender()">
+      <option value="">All</option>
+      <option value="Men">Men</option>
+      <option value="Women">Women</option>
+      <option value="Unisex">Unisex</option>
+    </select>
+  </div>
+
+  <div class="ctrl">
+    <label>Category</label>
+    <select id="fC" onchange="filterAndRender()">
+      <option value="">All Categories</option>
+      <option value="Men Fresh Aquatic">Men · Fresh Aquatic</option>
+      <option value="Men Spicy Woody">Men · Spicy Woody Sweet Gourmand</option>
+      <option value="Women Sweety Fruity">Women · Sweety Fruity Flowery Fresh</option>
+      <option value="Women Flowery Sweet">Women · Flowery Sweet Gourmand Oriental</option>
+      <option value="Unisex Fresh Aquatic">Unisex · Fresh Aquatic</option>
+      <option value="Unisex Spicy Woody">Unisex · Spicy Woody Sweet Gourmand</option>
+    </select>
+  </div>
+
+  <div class="ctrl ctrl-sort">
+    <label>Sort by</label>
+    <select id="fSort" onchange="filterAndRender()">
+      <option value="agg_desc">Final Rating ↓ High to Low</option>
+      <option value="agg_asc">Final Rating ↑ Low to High</option>
+      <option value="brand">Brand A → Z</option>
+    </select>
+  </div>
+</div>
+
+<div class="picks-section" id="picksSection">
+  <div class="picks-heading"><span class="picks-title">✦ Top Rated Fragrances ✦</span></div>
+  <div class="picks-grid" id="picksGrid"></div>
+</div>
+
+<main class="main">
+  <div class="no-results" id="noResults">No fragrances match your selection.</div>
+  <div id="root"></div>
+</main>
+
+<footer>
+  <div class="f-orn"><span>✦</span></div>
+  <p class="f-l1">Expert Ratings Results · <em>CDAO Fragrance Experts</em> · L'OréalGPT</p>
+  <p class="f-l2">Franziska · Halil · Sudhir · Collection Privée · MMXXVI</p>
+</footer>
+
+<script>
+/* ════ DATA — 57 Fragrances ════ */
+const D = [
+  /* Men · Fresh Aquatic */
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Louis Vuitton",            n:"Imagination",                            s:"Fresh · Citrus · Woody",                          f:5,h:4,u:3,    agg:4.0},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Giorgio Armani",           n:"Acqua di Gio Profumo",                   s:"Fresh · Aquatic · Incense",                       f:4,h:4,u:5,    agg:4.3, img:"ARMANI-AcquaDiGioParfumo.jpg"},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Chanel",                   n:"Allure Homme Édition Blanche",           s:"Fresh · Aquatic · Citrus",                        f:3,h:3,u:null, agg:3.0},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Chanel",                   n:"Bleu de Chanel EDP",                     s:"Fresh · Aquatic · Woody",                         f:3,h:3,u:3,    agg:3.0},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Mancera",                  n:"French Riviera",                         s:"Fresh · Aquatic · Marine",                        f:3,h:4,u:null, agg:3.5},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Versace",                  n:"Pour Homme Dylan Blue",                  s:"Fresh · Aquatic · Fougère",                       f:3,h:2,u:5,    agg:3.3},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"YSL",                      n:"Y EDP",                                  s:"Fresh · Aquatic · Woody",                         f:5,h:2,u:2,    agg:3.0},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Valentino",                n:"Uomo Born In Roma Green Stravaganza",    s:"Fresh · Citrus · Green",                          f:5,h:2,u:5,    agg:4.0},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Abercrombie & Fitch",      n:"Fierce",                                 s:"Woody · Musky · Aromatic · Clean",                f:3,h:2,u:5,    agg:3.3},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Lacoste",                  n:"L.12.12 Blanc",                          s:"Fresh · Floral · Citrus",                         f:3,h:3,u:4,    agg:3.3},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Prada",                    n:"Luna Rossa Carbon",                      s:"Fresh · Spicy · Sweet",                           f:3,h:3,u:4,    agg:3.3},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Ralph Lauren",             n:"Polo Cologne Intense",                   s:"Green · Fresh · Woody",                           f:3,h:2,u:4,    agg:3.0},
+  {g:"Men",    c:"Men Fresh Aquatic",   b:"Zara",                     n:"Sunrise on the Red Sand Dunes Intense",  s:"Fresh · Citrus · Fruity",                         f:3,h:3,u:4,    agg:3.3},
+
+  /* Men · Spicy Woody */
+  {g:"Men",    c:"Men Spicy Woody",     b:"Viktor & Rolf",            n:"Spicebomb Extreme",                      s:"Spicy · Warm · Vanilla",                          f:3,h:4,u:3,    agg:3.3},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Giorgio Armani",           n:"Stronger with You Intensely",            s:"Woody · Spicy · Sweet",                           f:5,h:4,u:5,    agg:4.7, img:"ARMANI-StrongerWithYou.jpg"},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Prada",                    n:"L'Homme Intense",                        s:"Powdery · Sweet · Iris",                          f:3,h:4,u:3,    agg:3.3},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Nusuk",                    n:"Fawah Midnight",                         s:"Woody · Spicy · Oriental",                        f:3,h:4,u:null, agg:3.5},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Tom Ford",                 n:"Noir Extreme",                           s:"Sweet · Gourmand · Woody",                        f:3,h:3,u:null, agg:3.0},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Jean Paul Gaultier",       n:"Le Mâle Le Parfum",                      s:"Sweet · Spicy · Lavender",                        f:4,h:2,u:5,    agg:3.7},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Dolce & Gabbana",          n:"The One for Men EDP",                    s:"Sweet · Spicy · Woody · Tobacco",                 f:3,h:4,u:4,    agg:3.7},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Viktor & Rolf",            n:"Spicebomb Dark Leather",                 s:"Leather · Woody · Spicy",                         f:2,h:3,u:5,    agg:3.3},
+  {g:"Men",    c:"Men Spicy Woody",     b:"Zara",                     n:"Rich / Warm / Addictive",                s:"Warm · Sweet · Woody · Gourmand",                 f:3,h:2,u:5,    agg:3.3},
+
+  /* Women · Sweety Fruity */
+  {g:"Women",  c:"Women Sweety Fruity", b:"Giorgio Armani",           n:"Sì EDP",                                 s:"Sweet · Fruity · Floral",                         f:5,h:3,u:5,    agg:4.3, img:"GiorgioArmani-SI_EDP.jpg"},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Chanel",                   n:"Chance Eau Tendre",                      s:"Flowery · Fresh · Citrus",                        f:2,h:4,u:null, agg:3.0},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Gritti",                   n:"Duchessa",                               s:"Sweet · Fruity · Rose",                           f:2,h:4,u:null, agg:3.0},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Jo Malone",                n:"Wood Sage & Sea Salt",                   s:"Fresh · Aquatic · Woody · Salty",                 f:3,h:4,u:null, agg:3.5},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Dior",                     n:"Eden-Roc",                               s:"Fresh · Aquatic · Green · Floral",                f:2,h:4,u:null, agg:3.0},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Chanel",                   n:"Mademoiselle",                           s:"Powdery · Fresh · Floral · Musk",                 f:5,h:3,u:null, agg:4.0},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Zarkoperfume",             n:"The Muse",                               s:"Powdery · Fresh · Iris · Musk",                   f:5,h:3,u:null, agg:4.0},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Noles",                    n:"No. 14",                                 s:"Powdery · Fresh · Floral · Clean",                f:5,h:3,u:null, agg:4.0},
+  {g:"Women",  c:"Women Sweety Fruity", b:"Valentino",                n:"Donna Born in Roma Green Stravaganza",   s:"Sweet · Floral · Fresh · Green",                  f:4,h:2,u:5,    agg:3.7},
+
+  /* Women · Flowery Sweet */
+  {g:"Women",  c:"Women Flowery Sweet", b:"Lancôme",                  n:"Idôle EDP",                              s:"Flowery · Sweet · Rose · Musk",                   f:3,h:4,u:4,    agg:3.7},
+  {g:"Women",  c:"Women Flowery Sweet", b:"Dior",                     n:"J'adore EDP",                            s:"Flowery · Sweet · Floral · Gold",                 f:2,h:3,u:null, agg:2.5},
+  {g:"Women",  c:"Women Flowery Sweet", b:"Nishane",                  n:"Hundred Silent Ways",                    s:"Flowery · Sweet · Woody · Musk",                  f:3,h:3,u:null, agg:3.0},
+  {g:"Women",  c:"Women Flowery Sweet", b:"Sol de Janeiro",           n:"Cheirosa '62",                           s:"Sweet · Gourmand · Caramel · Vanilla",            f:3,h:3,u:null, agg:3.0},
+  {g:"Women",  c:"Women Flowery Sweet", b:"Tom Ford",                 n:"Black Orchid EDP",                       s:"Flowery · Oriental · Dark · Spicy",               f:3,h:4,u:null, agg:3.5},
+  {g:"Women",  c:"Women Flowery Sweet", b:"YSL",                      n:"Libre Intense",                          s:"Floral · Amber · Woody · Lavender",               f:5,h:2,u:3,    agg:3.3},
+  {g:"Women",  c:"Women Flowery Sweet", b:"YSL",                      n:"Libre Platine",                          s:"Floral · Woody · Musk · Powdery",                 f:5,h:2,u:2,    agg:3.0},
+  {g:"Women",  c:"Women Flowery Sweet", b:"Burberry",                 n:"Her EDP",                                s:"Sweet · Fruity · Floral · Warm",                  f:3,h:2,u:5,    agg:3.3},
+  {g:"Women",  c:"Women Flowery Sweet", b:"Lancôme",                  n:"Idôle L'Intense",                        s:"Floral · Woody · Musk · Intense",                 f:3,h:3,u:4,    agg:3.3},
+
+  /* Unisex · Fresh Aquatic */
+  {g:"Unisex", c:"Unisex Fresh Aquatic",b:"Maison Margiela",          n:"Replica — Lazy Sunday Morning",          s:"Fresh · Floral · Powdery · Musk",                 f:5,h:3,u:5,    agg:4.3, img:"REPLICA-LazySundayMorning.jpg"},
+  {g:"Unisex", c:"Unisex Fresh Aquatic",b:"Nishane",                  n:"Hacivat",                                s:"Fresh · Woody · Chypre · Citrus",                 f:3,h:4,u:null, agg:3.5},
+  {g:"Unisex", c:"Unisex Fresh Aquatic",b:"Bohoboco",                 n:"Wet Cherry Liquor",                      s:"Fruity · Cherry · Gourmand · Sweet",              f:3,h:4,u:null, agg:3.5},
+  {g:"Unisex", c:"Unisex Fresh Aquatic",b:"Tom Ford",                 n:"Fucking Fabulous",                       s:"Woody · Spicy · Leather · Iris",                  f:4,h:4,u:null, agg:4.0},
+  {g:"Unisex", c:"Unisex Fresh Aquatic",b:"Fugazzi",                  n:"Angel Dust",                             s:"Powdery · Iris · Floral · Musk",                  f:3,h:4,u:null, agg:3.5},
+  {g:"Unisex", c:"Unisex Fresh Aquatic",b:"Amouage",                  n:"Search",                                 s:"Woody · Aromatic · Floral · Resinous",            f:3,h:4,u:null, agg:3.5},
+
+  /* Unisex · Spicy Woody */
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"YSL",                      n:"24 Rue de L'Université",                 s:"Woody · Spicy · Warm · Amber",                    f:3,h:3,u:5,    agg:3.7},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Marc-Antoine Barrois",     n:"Ganymede",                               s:"Woody · Spicy · Metallic · Citrus",               f:3,h:4,u:5,    agg:4.0},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Maison Francis Kurkdjian", n:"Baccarat Rouge 540 Extrait de Parfum",   s:"Floral · Amber · Jasmine · Saffron · Amberwood",  f:5,h:4,u:5,    agg:4.7, img:"MFK-BR540.jpg"},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Armani Privé",             n:"Cuir Noir",                              s:"Leather · Woody · Spicy · Dark",                  f:3,h:4,u:5,    agg:4.0},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Matière Première",         n:"Vanilla Powder",                         s:"Sweet · Powdery · Vanilla · Iris",                f:5,h:4,u:3,    agg:4.0},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Xerjoff",                  n:"Alexandria II",                          s:"Oriental · Floral · Woody · Rose",                f:4,h:4,u:null, agg:4.0},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"YSL",                      n:"Tuxedo",                                 s:"Woody · Spicy · Iris · Amber",                    f:3,h:5,u:3,    agg:3.7},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Xerjoff",                  n:"Naxos",                                  s:"Sweet · Oriental · Gourmand · Honey",             f:3,h:5,u:null, agg:4.0},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Tom Ford",                 n:"Rose Exposed",                           s:"Floral · Woody · Rose · Spicy",                   f:3,h:5,u:null, agg:4.0},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Maison Margiela",          n:"Jazz Club",                              s:"Tobacco · Rum · Vetiver · Pink Pepper · Musk",    f:3,h:4,u:3,    agg:3.3},
+  {g:"Unisex", c:"Unisex Spicy Woody",  b:"Armani Privé",             n:"Oud Royal",                              s:"Woody · Oriental · Spicy · Oud",                  f:4,h:4,u:5,    agg:4.3, img:"ARMANI_PRIVE_OUD_ROYAL.jpg"}
+];
+
+const SECTIONS = [
+  {c:"Men Fresh Aquatic",    r:"I",   name:"Fresh & Aquatic",                     g:"Men",    desc:"Light · Clean · Marine · Invigorating",            clr:"#4d7fa0"},
+  {c:"Men Spicy Woody",      r:"II",  name:"Spicy · Woody · Sweet · Gourmand",    g:"Men",    desc:"Deep · Warm · Complex · Commanding",               clr:"#a06830"},
+  {c:"Women Sweety Fruity",  r:"III", name:"Sweety · Fruity · Flowery · Fresh",   g:"Women",  desc:"Bright · Delicate · Playful · Luminous",           clr:"#b05878"},
+  {c:"Women Flowery Sweet",  r:"IV",  name:"Flowery · Sweet · Gourmand · Oriental",g:"Women", desc:"Rich · Sensual · Opulent · Timeless",            clr:"#7a5898"},
+  {c:"Unisex Fresh Aquatic", r:"V",   name:"Fresh & Aquatic",                     g:"Unisex", desc:"Modern · Versatile · Refined · Unbound",         clr:"#4a8568"},
+  {c:"Unisex Spicy Woody",   r:"VI",  name:"Spicy · Woody · Sweet · Gourmand",    g:"Unisex", desc:"Bold · Rare · Unforgettable · Iconic",          clr:"#8a6830"}
+];
+
+/* HELPERS */
+function aggClass(a){
+  if(a>=4.5) return {c:'c-gold', bg:'bg-gold'};
+  if(a>=4.0) return {c:'c-green', bg:'bg-green'};
+  if(a>=3.5) return {c:'c-blue', bg:'bg-blue'};
+  if(a>=3.0) return {c:'c-gray', bg:'bg-gray'};
+  return {c:'c-rose', bg:'bg-rose'};
+}
+function rsClass(v){ return (v===null||v===undefined) ? 'rs-null' : `rs-${v}`; }
+function rsDisp(v){ return (v===null||v===undefined) ? '—' : v; }
+function bc(g){ return g==='Men' ? 'bm' : g==='Women' ? 'bw' : 'bu'; }
+
+/* TOP PICKS */
+function renderPicks(data){
+  const sorted = [...data].sort((a,b)=>b.agg-a.agg);
+  const top = [];
+  const seen = new Set();
+
+  for(const d of sorted){
+    if(top.length >= 6) break;
+    const k = d.b + '|' + d.n;
+    if(!seen.has(k)){
+      seen.add(k);
+      top.push(d);
+    }
+  }
+
+  const medals = ['m1','m2','m2','m3','m3','m3'];
+  const labels = ['Best Rated','Best Rated','Best Rated','Highly Rated','Highly Rated','Highly Rated'];
+
+  document.getElementById('picksGrid').innerHTML = top.slice(0,6).map((d,i)=>{
+    const cls = aggClass(d.agg);
+    const s2 = SECTIONS.find(s=>s.c===d.c) || SECTIONS[0];
+    const pct = (d.agg/5)*100;
+
+    return `
+      <div class="pick-card" style="--sc:${s2.clr};animation-delay:${i*80}ms">
+        <div class="pick-img-wrap">
+          ${d.img
+            ? `<img class="pick-img" src="${d.img}" alt="${d.n}" onerror="this.style.display='none'"/>`
+            : `<div class="pick-img-fallback">✦</div>`}
+        </div>
+        <div class="pick-body">
+          <div class="pick-medal ${medals[i]}">${labels[i]}</div>
+          <div class="pick-brand">${d.b}</div>
+          <div class="pick-name">${d.n}</div>
+          <div class="pick-score">
+            <div class="agg-badge ${cls.c}">${d.agg.toFixed(1)}</div>
+            <div class="agg-bar-wrap">
+              <div class="agg-bar" style="width:${pct}%;background:${s2.clr}"></div>
+              <div class="agg-label">${d.g} · ${d.c.split(' ').slice(1).join(' ')}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* TABLE */
+function renderTable(data){
+  const root = document.getElementById('root');
+  const noR = document.getElementById('noResults');
+
+  if(!data.length){
+    root.innerHTML = '';
+    noR.style.display = 'block';
+    return;
+  }
+
+  noR.style.display = 'none';
+
+  const sort = document.getElementById('fSort').value;
+  const grp = {};
+  SECTIONS.forEach(s=>{ grp[s.c] = []; });
+  data.forEach(d=>{ if(grp[d.c]) grp[d.c].push(d); });
+
+  let html = '';
+
+  SECTIONS.forEach(sec=>{
+    let items = [...grp[sec.c]];
+    if(!items.length) return;
+
+    if(sort === 'agg_desc') items.sort((a,b)=>b.agg-a.agg);
+    else if(sort === 'agg_asc') items.sort((a,b)=>a.agg-b.agg);
+    else items.sort((a,b)=>a.b.localeCompare(b.b));
+
+    const total = D.filter(d=>d.c===sec.c).length;
+
+    html += `
+      <div class="sec-wrap" style="--sc:${sec.clr}">
+        <div class="sec-strip" data-roman="${sec.r}">
+          <div class="sec-inner">
+            <div class="sec-eyebrow">${sec.g} · ${items.length} of ${total} Fragrances</div>
+            <div class="sec-main">
+              <span class="sec-roman">${sec.r}</span>
+              <span class="sec-rule"></span>
+              <span class="sec-name">${sec.name}</span>
+            </div>
+            <div class="sec-desc">${sec.desc}</div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Gender</th>
+                  <th>Brand</th>
+                  <th>Fragrance</th>
+                  <th class="th-c">Franziska</th>
+                  <th class="th-c">Halil</th>
+                  <th class="th-c">Sudhir</th>
+                  <th class="th-c">Final Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+    `;
+
+    items.forEach((d,ri)=>{
+      const cls = aggClass(d.agg);
+      const pct = (d.agg/5)*100;
+
+      html += `
+        <tr style="animation:rowIn .4s ${ri*22}ms ease both">
+          <td class="td-rank">${ri+1}</td>
+          <td><span class="badge ${bc(d.g)}">${d.g}</span></td>
+          <td class="td-b">${d.b}</td>
+          <td class="td-n">${d.n}</td>
+          <td class="td-r"><span class="rater-score ${rsClass(d.f)}">${rsDisp(d.f)}</span></td>
+          <td class="td-r"><span class="rater-score ${rsClass(d.h)}">${rsDisp(d.h)}</span></td>
+          <td class="td-r"><span class="rater-score ${rsClass(d.u)}">${rsDisp(d.u)}</span></td>
+          <td class="td-agg">
+            <div class="agg-wrap">
+              <div class="agg-num ${cls.c}">${d.agg.toFixed(1)}</div>
+              <div class="agg-mini-bar ${cls.bg}" style="width:${pct * 0.44}px"></div>
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+
+    html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  root.innerHTML = html;
+}
+
+/* FILTER */
+function filterAndRender(){
+  const g = document.getElementById('fG').value;
+  const c = document.getElementById('fC').value;
+  const filtered = D.filter(d => (!g || d.g===g) && (!c || d.c===c));
+
+  document.getElementById('picksSection').style.display = (g || c) ? 'none' : 'block';
+
+  renderPicks(filtered.length ? filtered : D);
+  renderTable(filtered);
+}
+
+filterAndRender();
+</script>
+
+</body>
+</html>
